@@ -23,10 +23,10 @@ namespace KojosAvailability
             {
                 MainPage = CreateWatchGuardPage();
             }
-            //else if (Settings.NotSet(Settings.GartanApiKey))
-            //{
-            //    MainPage = CreateGartanLoginPage();
-            //}
+            else if (!await GartanHelper.InitialiseGartan())
+            {
+                MainPage = CreateGartanRegisterPage();
+            }
             else
             {
                 MainPage = new MainPage();
@@ -62,6 +62,26 @@ namespace KojosAvailability
             AppSettings.WatchGuardUsername = page.Username;
             AppSettings.WatchGuardPassword = page.Password;
 
+
+            MainPage = new MainPage();
+        }
+
+        private GartanRegisterPage CreateGartanRegisterPage()
+        {
+            var gartanRegisterPage = new GartanRegisterPage();
+            gartanRegisterPage.RegisterGartanDetails += HandleGartanDetailsSave;
+            return gartanRegisterPage;
+        }
+
+        private async void HandleGartanDetailsSave(object sender, EventArgs e)
+        {
+            var page = (GartanRegisterPage)sender;
+
+            if (!await GartanHelper.InitialiseGartan(page.ServiceCode, page.Username, page.Password))
+            {
+                page.SetErrorMessage("Log in failed.");
+                return;
+            }
 
             MainPage = new MainPage();
         }
