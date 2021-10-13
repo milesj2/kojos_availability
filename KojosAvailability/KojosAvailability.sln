@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KojosAvailability.iOS", "Ko
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KojosAvailability", "KojosAvailability\KojosAvailability\KojosAvailability.csproj", "{A9350937-0F3C-4CFA-9808-E5592816923A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{CE6026A9-B7B7-4B65-BD19-07BE95EF48FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -174,6 +176,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{783DE450-2387-4C6A-BF6D-1D1799FD84AC} = {CE6026A9-B7B7-4B65-BD19-07BE95EF48FA}
+		{FD632C5D-A04D-4DA5-B355-4BA1C99D5345} = {CE6026A9-B7B7-4B65-BD19-07BE95EF48FA}
+		{AF9E5E55-312B-4178-8ED6-78C5A8D4DD00} = {CE6026A9-B7B7-4B65-BD19-07BE95EF48FA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C678D7E7-E9F4-42C5-8779-10ABA8853E34}

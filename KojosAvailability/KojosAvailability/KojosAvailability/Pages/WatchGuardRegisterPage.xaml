@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="KojosAvailability.Pages.WatchGuardRegisterPage">
+    <ContentPage.Content>
+        <StackLayout Padding="30"        
+                     VerticalOptions="CenterAndExpand">
+            <Label Text="Enter WatchGuard Credentials:" />
+            <Entry x:Name="txtWatchGuardUrl"
+                   Margin="30,5,30,5"                   
+                   Placeholder="Enter WatchGuard URL"
+                   Text=""
+                   />
+            <Entry x:Name="txtWatchGuardUsername"
+                    Margin="30,5,30,5"                    
+                   Placeholder="Enter WatchGuard Username"
+                   Text=""
+                   />
+            <Entry x:Name="txtWatchGuardPassword"
+                   Margin="30,5,30,5"                     
+                   Placeholder="Enter WatchGuard Password"
+                   Text=""
+                   IsPassword="True"
+                   />
+            <Label x:Name="lblError"
+                    Text="Example Error"
+                    Margin="30,5,30,5"    
+                    HorizontalOptions="CenterAndExpand"
+                    TextColor="Red"
+                   IsVisible="false"/>
+            <Button Text="Save and Authenticate" 
+                    Margin="50,5,50,5"
+                    x:Name="btnSave"
+                    Clicked="btnSave_Clicked"
+                    VerticalOptions="Start"
+                    HeightRequest="50"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
