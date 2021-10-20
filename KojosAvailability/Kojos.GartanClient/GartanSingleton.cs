@@ -1,5 +1,7 @@
 ﻿using Kojos.GartanClient.CommonModels;
+using Kojos.GartanClient.EndPoints.Bookings.Models;
 using Kojos.GartanClient.EndPoints.Settings;
+using Kojos.GartanClient.EndPoints.Stations.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,16 +30,24 @@ namespace Kojos.GartanClient
         static GartanSingleton()
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            BaseRequests.AddHeader("AppKey", "GTL646878");
         }
 
         private static async Task<T> MethodWrapperAsync<T>(
             Func<Task<T>> f,
             bool checkedToken = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(UserAuthentication.Token))
             {
-                UserAuthentication.Token = await GetToken();
+                try
+                {
+                    UserAuthentication.Token = await GetToken();
+                }
+                catch (HttpRequestException httpException)
+                {
+                    throw;
+                }
             }
 
             try
@@ -46,7 +56,7 @@ namespace Kojos.GartanClient
             }
             catch (HttpRequestException httpException)
             {
-                if (httpException.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                if (httpException.StatusCode == HttpStatusCode.Unauthorized)
                 {
                     UserAuthentication.Token = await GetToken();
 
@@ -61,10 +71,10 @@ namespace Kojos.GartanClient
         {
             if (string.IsNullOrEmpty(UserAuthentication.Username) || string.IsNullOrEmpty(UserAuthentication.Password))
             {
-                // throw error
+                return null;
             }
 
-            GenericResponseModel response = await EndPoints.Authentication.Authentication.GetAuthenticationToken(UserAuthentication.Username, UserAuthentication.Password);
+            GenericResponseModel response = await EndPoints.Authentication.Authentication.GetAuthToken(UserAuthentication.Username, UserAuthentication.Password);
             return response.Data;
         }
 
@@ -75,6 +85,7 @@ namespace Kojos.GartanClient
                 if (string.IsNullOrEmpty(serviceCode) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password)) return false;
                 UserAuthentication.Username = username;
                 UserAuthentication.Password = password;
+
                 Url = string.Empty;
                 try
                 {
@@ -87,7 +98,16 @@ namespace Kojos.GartanClient
 
                 if (string.IsNullOrEmpty(Url)) return false;
 
-                return await ValidateSession();
+                try
+                {
+                    UserAuthentication.Token = await GetToken();
+                    return true;
+                }
+                catch (HttpRequestException httpException)
+                {
+                    if (httpException.StatusCode == HttpStatusCode.Unauthorized) return false;
+                    throw;
+                }
             }
 
             internal static async Task<bool> ValidateSession()
@@ -111,6 +131,23 @@ namespace Kojos.GartanClient
                 var response = await RequestService.Get<ApiRegisterModel>($"https://messaging.gartantech.com/DeviceManager.svc/register?accessCode={serviceCode}");
                 return response.URL;
             }
+        }
+
+        public static class Bookings
+        {
+            public static async Task<List<UserBookingsModel>> GetUserBookings(
+                string stationCallSign,
+                string startDate,
+                string endDate,
+                string maximumRows,
+                string startRowIndex)
+                => await MethodWrapperAsync(() => EndPoints.Bookings.Bookings.GetUserBookings(stationCallSign, startDate, endDate, maximumRows, startRowIndex));
+        }
+
+        public static class Stations
+        {
+            public static async Task<List<ApplianceStatusModel>> GetApplianceStatuses(string stationCallSign)
+                => await MethodWrapperAsync(() => EndPoints.Stations.Stations.GetApplianceStatusesAsync(stationCallSign));
         }
     }
 }

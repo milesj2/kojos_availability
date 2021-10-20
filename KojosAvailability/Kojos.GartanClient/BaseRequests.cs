@@ -158,7 +158,7 @@ namespace Kojos.GartanClient
             }
         }
 
-        private static string FormatParameters(Dictionary<string, string> dictParameters)
+        public static string FormatParameters(Dictionary<string, string> dictParameters)
         {
             StringBuilder parameters = new StringBuilder("?");
             int i = 0;
