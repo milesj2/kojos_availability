@@ -9,6 +9,8 @@ namespace Kojos.GartanClient
 {
     public static class RequestService
     {
+        public static async Task<T> Get<T>(string route, Dictionary<string, string> values) => await Get<T>(route + BaseRequests.FormatParameters(values));
+
         public static async Task<T> Get<T>(string route)
         {
             var httpResponseMessage = await BaseRequests.Get(route);
@@ -18,14 +20,17 @@ namespace Kojos.GartanClient
             {
                 return JsonConvert.DeserializeObject<T>(responseMessage);
             }
-            //throw new HttpClientTaskException(
-            //    httpResponseMessage.StatusCode,
-            //    string.IsNullOrWhiteSpace(responseMessage)
-            //        ? httpResponseMessage.StatusCode.ToString()
-            //        : responseMessage);
-
-            return default;
+            throw new HttpRequestException(
+                httpResponseMessage.StatusCode,
+                string.IsNullOrWhiteSpace(responseMessage)
+                    ? httpResponseMessage.StatusCode.ToString()
+                    : responseMessage);
         }
+
+        public static void AddHeader(string key, string value) => BaseRequests.AddHeader(key, value);
+
+        public static void RemoveHeader(string key) => BaseRequests.RemoveHeader(key);
+
 
     }
 }

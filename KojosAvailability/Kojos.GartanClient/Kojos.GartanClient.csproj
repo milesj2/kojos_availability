@@ -46,9 +46,14 @@
   <ItemGroup>
     <Compile Include="BaseRequests.cs" />
     <Compile Include="CommonModels\ApiRegisterModel.cs" />
+    <Compile Include="CommonModels\OnCallStatusModelcs.cs" />
     <Compile Include="EndPoints\Authentication\Authentication.cs" />
     <Compile Include="CommonModels\GenericResponseModel.cs" />
+    <Compile Include="EndPoints\Bookings\Bookings.cs" />
+    <Compile Include="EndPoints\Bookings\Models\UserBookingsModel.cs" />
     <Compile Include="EndPoints\Settings\Settings.cs" />
+    <Compile Include="EndPoints\Stations\Models\ApplianceStatusModel.cs" />
+    <Compile Include="EndPoints\Stations\Stations.cs" />
     <Compile Include="GartanSingleton.cs" />
     <Compile Include="HttpRequestException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

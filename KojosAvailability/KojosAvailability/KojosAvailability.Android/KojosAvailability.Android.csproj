@@ -61,10 +61,14 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AndroidConstants.cs" />
+    <Compile Include="Helpers\NotificationHelper.cs" />
     <Compile Include="HttpClientHandlerService.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Receivers\OnBoot.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AvailabilityService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -93,6 +97,10 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Kojos.GartanClient\Kojos.GartanClient.csproj">
+      <Project>{CD232B12-515A-4261-ADD4-FB5AEEDCF964}</Project>
+      <Name>Kojos.GartanClient</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KojosAvailability\KojosAvailability.csproj">
       <Project>{EDF7E158-8F55-44A7-8B36-6010DADEC364}</Project>
       <Name>KojosAvailability</Name>

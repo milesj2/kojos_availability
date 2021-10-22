@@ -3,6 +3,7 @@ using KojosAvailability.Pages;
 using KojosAvailability.Services;
 using NuGet.Configuration;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,10 +15,24 @@ namespace KojosAvailability
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new LoadingScreen();
         }
 
         protected override async void OnStart()
+        {
+            await Initialise();
+        }
+
+        protected override void OnSleep()
+        {
+        }
+
+        protected override async void OnResume()
+        {
+            await Initialise();
+        }
+
+        private async Task Initialise()
         {
             if (!await WatchGuardHelper.AuthenticateWatchGuard())
             {
@@ -31,14 +46,6 @@ namespace KojosAvailability
             {
                 MainPage = new MainPage();
             }
-        }
-
-        protected override void OnSleep()
-        {
-        }
-
-        protected override void OnResume()
-        {
         }
 
         private WatchGuardRegisterPage CreateWatchGuardPage()
@@ -62,8 +69,14 @@ namespace KojosAvailability
             AppSettings.WatchGuardUsername = page.Username;
             AppSettings.WatchGuardPassword = page.Password;
 
-
-            MainPage = new MainPage();
+            if (!await GartanHelper.InitialiseGartan())
+            {
+                MainPage = CreateGartanRegisterPage();
+            }
+            else
+            {
+                MainPage = new MainPage();
+            }
         }
 
         private GartanRegisterPage CreateGartanRegisterPage()

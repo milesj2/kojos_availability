@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Kojos.GartanClient;
+using Kojos.GartanClient.CommonModels;
+using Kojos.GartanClient.EndPoints.Bookings.Models;
 using KojosAvailability.Services;
 
 namespace KojosAvailability.Helpers
@@ -21,6 +23,31 @@ namespace KojosAvailability.Helpers
 
         public static async Task<bool> InitialiseGartan() => await GartanSingleton.Authentication.Login(AppSettings.GartanApiUrl, AppSettings.GartanUsername, AppSettings.GartanPassword);
 
+
+        public static async Task<OnCallStatusModel> GetOnCallStatus()
+        {
+            var onCallStatus = new OnCallStatusModel();
+
+            var timeNow = DateTime.Now;
+            var quarterHour = timeNow.Minute - (timeNow.Minute % 15);
+            onCallStatus.Time = new DateTime(timeNow.Year, timeNow.Month, timeNow.Day, timeNow.Hour, quarterHour, 0);
+
+            List<UserBookingsModel> userBookings = await GartanSingleton.Bookings.GetUserBookings("G08", "", "", "2", "0");
+
+            foreach (UserBookingsModel booking in userBookings)
+            {
+                if ((booking.StartDate <= timeNow) && (booking.EndDate > timeNow))
+                {
+                    onCallStatus.OnCall = false;
+                }
+            }
+
+            var applianceStatus = await GartanSingleton.Stations.GetApplianceStatuses("G08");
+
+            onCallStatus.OnTheRun = applianceStatus[0].Status == "OK";
+
+            return onCallStatus;
+        }
 
     }
 }

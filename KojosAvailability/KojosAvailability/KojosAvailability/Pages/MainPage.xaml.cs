@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KojosAvailability.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,5 +17,17 @@ namespace KojosAvailability.Pages
         {
             InitializeComponent();
         }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+            var status = await GartanHelper.GetOnCallStatus();
+
+            string onCall = status.OnCall ? string.Empty : "not";
+
+            lblMain.Text = $"You are {onCall} on call";
+        }
+
     }
 }
