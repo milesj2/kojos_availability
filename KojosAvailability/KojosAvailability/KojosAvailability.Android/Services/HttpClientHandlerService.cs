@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using KojosAvailability.Droid;
+﻿using System.Net.Http;
+using KojosAvailability.Droid.Service;
 using KojosAvailability.Interfaces;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(HttpClientHandlerService))]
-namespace KojosAvailability.Droid
+namespace KojosAvailability.Droid.Service
 {
     public class HttpClientHandlerService : IHttpClientHandlerService
     {

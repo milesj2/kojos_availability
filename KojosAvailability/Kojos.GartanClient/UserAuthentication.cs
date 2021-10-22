@@ -8,18 +8,6 @@ namespace Kojos.GartanClient
 {
     public class UserAuthentication
     {
-        //private static UserAuthentication _userAuthentication;
-
-        //public static UserAuthentication GetInstance()
-        //{
-        //    if (_userAuthentication == null)
-        //    {
-        //        _userAuthentication = new UserAuthentication();
-        //    }
-
-        //    return _userAuthentication;
-        //}
-
         public static string Username { get; set; }
 
         public static string Password { get; set; }
@@ -28,6 +16,6 @@ namespace Kojos.GartanClient
 
         public static string Token { get; set; }
 
-        public static string GetApiKeyParameter() => $"apiKey={Token}";
+        public static string GetApiKeyAndValue() => $"apiKey={Token}";
     }
 }

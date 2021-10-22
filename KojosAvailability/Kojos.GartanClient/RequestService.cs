@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,6 +29,8 @@ namespace Kojos.GartanClient
         }
 
         public static void AddHeader(string key, string value) => BaseRequests.AddHeader(key, value);
+
+        public static void AddAuthorization(AuthenticationHeaderValue value) => BaseRequests.AddAuthorization(value);
 
         public static void RemoveHeader(string key) => BaseRequests.RemoveHeader(key);
 

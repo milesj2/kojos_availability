@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,18 +19,24 @@ namespace Kojos.GartanClient.EndPoints.Authentication
         internal static async Task<GenericResponseModel> GetAuthToken(string username, string password)
         {
             var bytes = Encoding.UTF8.GetBytes($"{username}:{password}");
-            string auth = $"Basic {Convert.ToBase64String(bytes)}";
+            string auth = $"{Convert.ToBase64String(bytes)}";
 
             GenericResponseModel genericResponseModel = default;
 
             try
             {
-                RequestService.AddHeader("Authorization", auth);
+                RequestService.AddAuthorization(new AuthenticationHeaderValue("Basic", auth));
                 genericResponseModel = await RequestService.Get<GenericResponseModel>($"{ROUTE}{EP_AUTHENTICATE}");
             }
-            finally
+            catch (HttpRequestException e)
             {
-                RequestService.RemoveHeader("Authorization");
+
+                if (e.StatusCode != System.Net.HttpStatusCode.Unauthorized)
+                {
+                    return genericResponseModel;
+                }
+
+                throw e;
             }
 
             return genericResponseModel;

@@ -6,7 +6,7 @@
              mc:Ignorable="d"
              x:Class="KojosAvailability.Pages.MainPage">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout BackgroundColor="{DynamicResource PrimaryColor}">
             <Label x:Name="lblMain" 
                 Text="Welcome to Xamarin.Forms!"
                 VerticalOptions="CenterAndExpand" 

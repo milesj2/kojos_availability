@@ -14,14 +14,24 @@ namespace KojosAvailability.Helpers
 
         public static async Task<bool> InitialiseGartan(string serviceCode, string username, string password)
         {
-            AppSettings.GartanApiUrl = serviceCode;
+            AppSettings.GartanApiUrl = await GartanSingleton.Authentication.GetAPIUrl(serviceCode);
             AppSettings.GartanUsername = username;
             AppSettings.GartanPassword = password;
 
             return await InitialiseGartan();
         }
 
-        public static async Task<bool> InitialiseGartan() => await GartanSingleton.Authentication.Login(AppSettings.GartanApiUrl, AppSettings.GartanUsername, AppSettings.GartanPassword);
+        public static async Task<bool> InitialiseGartan()
+        {
+            GartanSingleton.Url = AppSettings.GartanApiUrl;
+
+            if (string.IsNullOrEmpty(AppSettings.GartanApiUrl) || string.IsNullOrEmpty(AppSettings.GartanApiUrl) || string.IsNullOrEmpty(AppSettings.GartanApiUrl))
+                return false;
+
+            return await GartanSingleton.Authentication.Login(AppSettings.GartanUsername, AppSettings.GartanPassword);
+        }
+
+
 
 
         public static async Task<OnCallStatusModel> GetOnCallStatus()

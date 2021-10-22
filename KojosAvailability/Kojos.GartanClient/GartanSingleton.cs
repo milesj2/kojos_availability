@@ -15,7 +15,7 @@ namespace Kojos.GartanClient
     public static class GartanSingleton
     {
 
-        internal static string Url
+        public static string Url
         {
             get
             {
@@ -29,7 +29,7 @@ namespace Kojos.GartanClient
 
         static GartanSingleton()
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            // ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
             BaseRequests.AddHeader("AppKey", "GTL646878");
         }
 
@@ -43,6 +43,7 @@ namespace Kojos.GartanClient
                 try
                 {
                     UserAuthentication.Token = await GetToken();
+                    // if (UserAuthentication.Token == null) throw;
                 }
                 catch (HttpRequestException httpException)
                 {
@@ -80,34 +81,32 @@ namespace Kojos.GartanClient
 
         public static class Authentication
         {
-            public static async Task<bool> Login(string serviceCode, string username, string password)
+            public static bool LoggingIn { get; private set; }
+
+            public static async Task<bool> Login(string username, string password)
             {
-                if (string.IsNullOrEmpty(serviceCode) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password)) return false;
+                LoggingIn = true;
+
+                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password)) return false;
                 UserAuthentication.Username = username;
                 UserAuthentication.Password = password;
-
-                Url = string.Empty;
-                try
-                {
-                    Url = await GetAPIUrl(serviceCode);
-                }
-                catch
-                {
-                    throw;
-                }
 
                 if (string.IsNullOrEmpty(Url)) return false;
 
                 try
                 {
                     UserAuthentication.Token = await GetToken();
+                    LoggingIn = false;
                     return true;
                 }
                 catch (HttpRequestException httpException)
                 {
+                    LoggingIn = false;
                     if (httpException.StatusCode == HttpStatusCode.Unauthorized) return false;
                     throw;
                 }
+
+
             }
 
             internal static async Task<bool> ValidateSession()
@@ -126,8 +125,9 @@ namespace Kojos.GartanClient
                 }
             }
 
-            private static async Task<string> GetAPIUrl(string serviceCode)
+            public static async Task<string> GetAPIUrl(string serviceCode)
             {
+                BaseRequests.BaseUrl = string.Empty;
                 var response = await RequestService.Get<ApiRegisterModel>($"https://messaging.gartantech.com/DeviceManager.svc/register?accessCode={serviceCode}");
                 return response.URL;
             }

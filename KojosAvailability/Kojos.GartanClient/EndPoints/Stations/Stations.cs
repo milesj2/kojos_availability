@@ -14,7 +14,7 @@ namespace Kojos.GartanClient.EndPoints.Stations
         const string EP_GetApplianceStatus = "GetApplianceStatus";
 
         internal static async Task<List<ApplianceStatusModel>> GetApplianceStatusesAsync(string callSign)
-            => await RequestService.Get<List<ApplianceStatusModel>>($"{ROUTE}{EP_GetApplianceStatus}?{UserAuthentication.GetApiKeyParameter()}&callSign={callSign}");
+            => await RequestService.Get<List<ApplianceStatusModel>>($"{ROUTE}{EP_GetApplianceStatus}?{UserAuthentication.GetApiKeyAndValue()}&callSign={callSign}");
 
     }
 }

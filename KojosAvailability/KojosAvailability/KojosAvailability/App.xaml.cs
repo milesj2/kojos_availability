@@ -1,8 +1,11 @@
 ﻿using KojosAvailability.Helpers;
+using KojosAvailability.Interfaces;
 using KojosAvailability.Pages;
+using KojosAvailability.Resources.Styles;
 using KojosAvailability.Services;
 using NuGet.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -34,6 +37,8 @@ namespace KojosAvailability
 
         private async Task Initialise()
         {
+            HandleThemes();
+
             if (!await WatchGuardHelper.AuthenticateWatchGuard())
             {
                 MainPage = CreateWatchGuardPage();
@@ -45,6 +50,29 @@ namespace KojosAvailability
             else
             {
                 MainPage = new MainPage();
+            }
+        }
+
+        private void HandleThemes()
+        {
+            ICollection<ResourceDictionary> mergedDictionaries = Current.Resources.MergedDictionaries;
+
+            if (mergedDictionaries != null)
+            {
+                mergedDictionaries.Clear();
+
+                var theme = DependencyService.Get<IEnvironment>().GetOperatingSystemTheme();
+
+                switch (theme)
+                {
+                    case Theme.Dark:
+                        mergedDictionaries.Add(new DarkTheme());
+                        break;
+                    case Theme.Light:
+                    default:
+                        mergedDictionaries.Add(new LightTheme());
+                        break;
+                }
             }
         }
 

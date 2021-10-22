@@ -26,6 +26,8 @@ namespace KojosAvailability.Droid.Services
         bool channelInitialized = false;
         int messageId = -1;
 
+        static bool _refreshing;
+
         public override bool OnStartJob(JobParameters jobParams)
         {
             Task.Run(async () =>
@@ -45,46 +47,52 @@ namespace KojosAvailability.Droid.Services
 
         async Task<bool> DoWork()
         {
-            if (!channelInitialized)
-                CreateNotificationChannel();
+            if (_refreshing) return true;
+
+            _refreshing = true;
+
+            if (!channelInitialized) CreateNotificationChannel();
 
             string message;
             string icoIdentifier;
 
             OnCallStatusModel onCallStatus = null;
 
+            if (!await WatchGuardHelper.AuthenticateWatchGuard())
+            {
+                _refreshing = false;
+                return false;
+            }
+
             try
             {
+                if (!await GartanHelper.InitialiseGartan())
+                {
+                    _refreshing = false;
+                    return false;
+                }
                 onCallStatus = await GartanHelper.GetOnCallStatus();
             }
             catch (Exception e)
             {
             }
 
-            if (onCallStatus == null) return false;
+            if (onCallStatus == null)
+            {
+                _refreshing = false;
+                return false;
+            }
+            string onCall = onCallStatus.OnCall ? "On" : "Off";
+            string onTheRun = onCallStatus.OnTheRun ? "On" : "Off";
 
-            if (onCallStatus.OnTheRun && onCallStatus.OnCall)
-            {
-                message = "On call | On the run";
-                icoIdentifier = "on_call_on_run";
-            }
-            else if (onCallStatus.OnTheRun && !onCallStatus.OnCall)
-            {
-                message = "Off call | On the run";
-                icoIdentifier = "off_call_on_run";
-            }
-            else if (!onCallStatus.OnTheRun && onCallStatus.OnCall)
-            {
-                message = "On call | Off the run";
-                icoIdentifier = "on_call_off_run";
-            }
-            else
-            {
-                message = "off call | off the run";
-                icoIdentifier = "off_call_off_run";
-            }
+            message = $"{onCall} call | {onTheRun} the run";
+            icoIdentifier = $"{onCall.ToLower()}_call_{onTheRun.ToLower()}";
 
             CreateNotification("Status", message, icoIdentifier);
+
+
+            _refreshing = false;
+
 
             return true;
         }
@@ -119,6 +127,7 @@ namespace KojosAvailability.Droid.Services
             manager.Notify(messageId, notification);
 
             //return messageId;
+
             return;
         }
 

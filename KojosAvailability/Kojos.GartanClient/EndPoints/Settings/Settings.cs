@@ -14,7 +14,7 @@ namespace Kojos.GartanClient.EndPoints.Settings
 
         const string EP_SHOW_LEAVE_TOOL = "ShowLeaveTool";
 
-        internal static async Task<GenericResponseModel> ShowLeaveTool() => await RequestService.Get<GenericResponseModel>($"{ROUTE}{EP_SHOW_LEAVE_TOOL}?{UserAuthentication.GetApiKeyParameter()}");
+        internal static async Task<GenericResponseModel> ShowLeaveTool() => await RequestService.Get<GenericResponseModel>($"{ROUTE}{EP_SHOW_LEAVE_TOOL}?{UserAuthentication.GetApiKeyAndValue()}");
 
     }
 }
