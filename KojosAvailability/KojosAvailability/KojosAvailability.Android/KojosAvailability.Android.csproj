@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="AndroidConstants.cs" />
     <Compile Include="Helpers\NotificationHelper.cs" />
+    <Compile Include="Renderers\Graphs\PieChartRenderer.cs" />
     <Compile Include="Services\EnvironmentService.cs" />
     <Compile Include="Services\HttpClientHandlerService.cs" />
     <Compile Include="MainActivity.cs" />

@@ -10,17 +10,17 @@
     <!--White-->
     <Color x:Key="PrimaryTintColor">#FFFFFF</Color>
     <!--White-->
-    <Color x:Key="PageBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="PageBackgroundColor">#121212</Color>
     <!--Green-->
     <Color x:Key="NavigationBarColor">#2acd09</Color>
     <!--Dark Grey-->
-    <Color x:Key="PrimaryTextColor">#3f3f3f</Color>
+    <Color x:Key="PrimaryTextColor">#FEFEFE</Color>
     <!--Mid Grey-->
-    <Color x:Key="SecondaryTextColor">#6e6e6e</Color>
+    <Color x:Key="SecondaryTextColor">#656565</Color>
     <!--Mid-Light Grey-->
     <Color x:Key="SubTextColor">#969696</Color>
     <!--White-->
-    <Color x:Key="OverlayTextColor">#FFFFFF</Color>
+    <Color x:Key="OverlayTextColor">#000000</Color>
     <!--Transperant Black-->
     <Color x:Key="TransperantBackgroundColor">#56000000</Color>
     <!--Silver Light Grey-->
