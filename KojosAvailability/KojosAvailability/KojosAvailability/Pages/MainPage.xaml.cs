@@ -1,4 +1,5 @@
-﻿using KojosAvailability.Helpers;
+﻿using KojosAvailability.Controllers.Graphs.PieChart;
+using KojosAvailability.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,28 @@ namespace KojosAvailability.Pages
             string onCall = status.OnCall ? string.Empty : "not";
 
             lblMain.Text = $"You are {onCall} on call";
+
+            pcAvailabilty.Data = new List<PieChartDataSet>()
+            {
+                new PieChartDataSet()
+                {
+                    Colour = new Color(0.0, 1, 0),
+                    Value = 120,
+                    Label = "One"
+                },
+                new PieChartDataSet()
+                {
+                    Colour = new Color(1, 0, 0),
+                    Value = 120,
+                    Label = "Two"
+                },
+                new PieChartDataSet()
+                {
+                    Colour = new Color(0.0, 0, 1),
+                    Value = 120,
+                    Label = "Three"
+                },
+            };
         }
 
     }

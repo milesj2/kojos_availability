@@ -7,7 +7,7 @@
              x:Class="KojosAvailability.App">
     <Application.Resources>
 
-        <ResourceDictionary Source="Resources/Styles/LightTheme.xaml" />
+        <ResourceDictionary Source="Resources/Styles/DarkTheme.xaml" />
 
         <Style x:Key="PrimaryButtonStyle" TargetType="Button">
             <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryColor}"/>
