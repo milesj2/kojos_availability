@@ -86,7 +86,7 @@ namespace KojosAvailability.Droid.Services
             string onTheRun = onCallStatus.OnTheRun ? "On" : "Off";
 
             message = $"{onCall} call | {onTheRun} the run";
-            icoIdentifier = $"{onCall.ToLower()}_call_{onTheRun.ToLower()}";
+            icoIdentifier = $"{onCall.ToLower()}_call_{onTheRun.ToLower()}_run";
 
             CreateNotification("Status", message, icoIdentifier);
 

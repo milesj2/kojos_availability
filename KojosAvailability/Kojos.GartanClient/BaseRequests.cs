@@ -166,10 +166,11 @@ namespace Kojos.GartanClient
             foreach (KeyValuePair<string, string> param in dictParameters)
             {
                 i++;
+                parameters.Append($"{param.Key}={param.Value}&");
                 if (i != dictParameters.Count)
-                    parameters.Append(param.Key + "=" + param.Value + "&");
-                else
-                    parameters.Append(param.Key + "=" + param.Value);
+                {
+                    parameters.Append("&");
+                }
             }
             return parameters.ToString();
         }
